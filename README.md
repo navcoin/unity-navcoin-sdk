@@ -1,2 +1,1 @@
-# unity-navcoin-sdk
- Unity SDK
+# Unity Navcoin SDK
