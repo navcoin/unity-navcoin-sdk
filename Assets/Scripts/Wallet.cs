@@ -78,7 +78,7 @@ public class Wallet : MonoBehaviour
     
     private string GenerateRandomAlphaNumericStr()
     {
-        int desiredLength=24;
+        int desiredLength=8;
         StringBuilder Code = new StringBuilder("");
         StringBuilder GeneratedCode = new StringBuilder("");
         char[] chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
