@@ -13,10 +13,8 @@ public class Inventory : MonoBehaviour
         public string ItemName;
         public string NftFamilyID;
     }
-
     public static JsonData itemData;
     static List<Item> GameItems = new List<Item>();
-
     void Start()
     {
         GameItems.Add(new Item()
@@ -75,14 +73,14 @@ public class Inventory : MonoBehaviour
             ItemID=7,
             ItemName="Skin 8",
             NftFamilyID="skin_8",
-        });        
+        });
         GameItems.Add(new Item()
         {
             ItemType="PlayerSkin",
             ItemID=8,
             ItemName="Skin 9",
             NftFamilyID="skin_9",
-        });        
+        });
         GameItems.Add(new Item()
         {
             ItemType="PlayerSkin",
@@ -96,7 +94,7 @@ public class Inventory : MonoBehaviour
             ItemID=10,
             ItemName="Skin 11",
             NftFamilyID="skin_11",
-        });        
+        });
         GameItems.Add(new Item()
         {
             ItemType="PlayerSkin",
@@ -110,14 +108,14 @@ public class Inventory : MonoBehaviour
             ItemID=1,
             ItemName="King",
             NftFamilyID="king",
-        });          
+        });
         GameItems.Add(new Item()
         {
             ItemType="Emblem",
             ItemID=9,
             ItemName="Loco Roco",
             NftFamilyID="loco_roco",
-        });                
+        });
     }
 
     public void PrintInventory()
@@ -150,7 +148,6 @@ public class Inventory : MonoBehaviour
         string NftFamilyID=null;
         bool isItemFound=false;
         bool isNftFound=false;
-
         for (int i = 0; i < GameItems.Count; i++)
         {
             if (GameItems[i].ItemType==ItemType && GameItems[i].ItemID==ItemID)
@@ -178,7 +175,6 @@ public class Inventory : MonoBehaviour
             return false;
         }
     }
-
     public bool IsNFTAvailable(string nft_family_id)
     {
         for (int i = 0; i < itemData.Count; i++)

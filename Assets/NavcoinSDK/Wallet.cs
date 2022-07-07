@@ -13,7 +13,6 @@ using TMPro;
 using System.IO;
 using ZXing;
 using ZXing.QrCode;
-
 public static class ButtonExtension
 {
     public static void AddEventListener<T> (this Button button, T param, Action<T> OnClick)
@@ -24,7 +23,6 @@ public static class ButtonExtension
         });
     }
 }
-
 public class Wallet : MonoBehaviour
 {
     [SerializeField]
@@ -71,11 +69,10 @@ public class Wallet : MonoBehaviour
     JsonData resultData;
     private string JsonString;
     private string FilterNFTSubCategory="";
-    private string ApiURL="https://api.nextwallet.org/CheckQR";
+    private string ApiURL="https://api.nextwallet.org/testnet/CheckQR";
     private int ProjectID=1;
     private Texture2D _storeEncodedTexture;
     List<t2d> Texture2DArray = new List<t2d>();
-    
     private string GenerateRandomAlphaNumericStr()
     {
         int desiredLength=8;
@@ -95,7 +92,6 @@ public class Wallet : MonoBehaviour
         Debug.Log("Code -> " + Code.ToString());
         return Code.ToString();
     }
-
     private IEnumerator GetNFTsWithQRCode(string code)
     {
         qrClass qr1 = new qrClass();
@@ -145,7 +141,6 @@ public class Wallet : MonoBehaviour
             yield return new WaitForSeconds(3f);
         }
     }
-
     private void ItemClicked (int itemIndex)
     {
         Debug.Log ("Item Clicked Index -> " + itemIndex);
@@ -155,19 +150,16 @@ public class Wallet : MonoBehaviour
         Debug.Log ("NFT Name -> " + NFTs [itemIndex].Name);
         Debug.Log ("NFT Description -> " + NFTs [itemIndex].Description);
     }
-
     public void Connect()
     {
         Debug.Log("Trying to connect extension...");
         WebGLPluginJS.Connect();
     }
-
     public void GetNFTCollections()
     {
         Debug.Log("Getting NFT collections...");
         WebGLPluginJS.GetNFTCollections();
     }
-
     private async UniTask<Texture2D> GetTexture(string url)
     {
         for (int i=0;i<Texture2DArray.Count;i++)
@@ -178,7 +170,6 @@ public class Wallet : MonoBehaviour
                 break;
             }
         }
-
         using (var req = UnityWebRequestTexture.GetTexture(url))
         {
             try
@@ -189,7 +180,7 @@ public class Wallet : MonoBehaviour
                 {
                     id=url,
                     texture=t,
-                });                
+                });
                 return t;
             }
             catch (Exception err) {
@@ -198,7 +189,6 @@ public class Wallet : MonoBehaviour
             }
         }
     }
-
     public void CheckExtension(string json)
     {
         Debug.Log(json);
@@ -225,7 +215,6 @@ public class Wallet : MonoBehaviour
             }
         }
     }
-
     public void Process(string json)
     {
         Debug.Log(json);
@@ -252,7 +241,6 @@ public class Wallet : MonoBehaviour
             }
         }
     }
-
     public void ProcessNFTCollections(string json)
     {
         Debug.Log("Processing NFT Collections...");
@@ -263,7 +251,6 @@ public class Wallet : MonoBehaviour
             Debug.Log("Key:" + kvp.Key + " Value:" + kvp.Value.Value);
         }
     }
-
     public void AcceptConnection(string walletAddress)
     {
         Debug.Log("Connection accepted");
@@ -271,7 +258,12 @@ public class Wallet : MonoBehaviour
         status.text="Connection accepted";
         address.text=walletAddress;
     }
-
+    public string  IPFSToUrl(string address)
+    {
+        string base_url="https://ipfs.nextwallet.org/ipfs/";
+        string[] subs = address.Split("ipfs://");
+        return base_url+subs[1];
+    }
     async void updateListView()
     {
         foreach (Transform child in contentPanel.transform)
@@ -292,7 +284,7 @@ public class Wallet : MonoBehaviour
                 FamilyID=(itemData[i]["family_id"]!=null?itemData[i]["family_id"].ToString():""),
                 Category=(itemData[i]["nft_category"]!=null?itemData[i]["nft_category"].ToString():""),
                 SubCategory=(itemData[i]["nft_sub_category"]!=null?itemData[i]["nft_sub_category"].ToString():""),
-                ImageUrl=itemData[i]["image"].ToString()
+                ImageUrl=IPFSToUrl(itemData[i]["image"].ToString())
             });
         }
         for (int i = 0; i < itemData.Count; i++)
@@ -318,7 +310,6 @@ public class Wallet : MonoBehaviour
             }
         }
     }
-
     void NFTCollections(string json)
     {
         itemData=JsonMapper.ToObject(json);
@@ -328,7 +319,6 @@ public class Wallet : MonoBehaviour
         Debug.Log(itemData);
         updateListView();
     }
-    
     private Color32 [] Encode(string textForEncoding, int width, int height)
     {
         BarcodeWriter writer = new BarcodeWriter
@@ -342,7 +332,6 @@ public class Wallet : MonoBehaviour
         };
         return writer.Write(textForEncoding);
     }
-
     private void EncodeTextQRCode(string textWrite)
     {
         Color32[] _convertPixelToTexture = Encode (textWrite, _storeEncodedTexture.width, _storeEncodedTexture.height);
@@ -350,7 +339,6 @@ public class Wallet : MonoBehaviour
         _storeEncodedTexture.Apply();
         _rawImageReceiver.texture=_storeEncodedTexture;
     }
-
     async void Start()
     {
         NFTCategories.Add(new NFTCategory(){Key="",Title="All"});
@@ -392,7 +380,6 @@ public class Wallet : MonoBehaviour
         DropdownCategories.AddOptions(Items);
         DropdownCategories.onValueChanged.AddListener(delegate {DropdownItemSelected(DropdownCategories);});
     }
-    
     void DropdownItemSelected(TMP_Dropdown DropdownCategories)
     {
         int index=DropdownCategories.value;
@@ -400,13 +387,11 @@ public class Wallet : MonoBehaviour
         FilterNFTSubCategory=NFTCategories[index].Key;
         updateListView();
     }
-    
     private void EnterGame()
     {
         Debug.Log("Entering game...");
-        SceneManager.LoadScene("Main");        
+        SceneManager.LoadScene("Main");
     }
-
     private void Quit()
     {
         Application.Quit();
